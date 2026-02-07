@@ -9,3 +9,9 @@ variable "environment" {
   type        = string
   default     = "dev"
 }
+
+variable "s3_bucket_name" {
+  description = "Name of the S3 bucket (must be globally unique)"
+  type        = string
+  default     = "vkapko-test-bucket"
+}
