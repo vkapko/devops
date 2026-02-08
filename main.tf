@@ -144,6 +144,16 @@ resource "aws_instance" "main" {
   vpc_security_group_ids = [aws_security_group.main.id]
   key_name               = aws_key_pair.main.key_name
 
+  user_data = <<-EOF
+    #!/bin/bash
+    yum update -y
+    amazon-linux-extras install docker -y
+    systemctl start docker
+    systemctl enable docker
+    usermod -aG docker ec2-user
+    docker pull python:3.14
+  EOF
+
   root_block_device {
     volume_size           = 8
     volume_type           = "gp3"
