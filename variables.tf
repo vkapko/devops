@@ -15,3 +15,9 @@ variable "s3_bucket_name" {
   type        = string
   default     = "vkapko-test-bucket"
 }
+
+variable "ssh_public_key_path" {
+  description = "Path to the SSH public key file"
+  type        = string
+  default     = "~/.ssh/aws-main-key.pub"
+}
