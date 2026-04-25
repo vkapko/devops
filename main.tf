@@ -92,14 +92,14 @@ resource "aws_route_table_association" "main" {
   route_table_id = aws_route_table.main.id
 }
 
-# Latest Amazon Linux 2 AMI (avoids hardcoding AMI ID per region)
-data "aws_ami" "amazon_linux_2" {
+# Latest Amazon Linux 2023 AMI (avoids hardcoding AMI ID per region)
+data "aws_ami" "amazon_linux_2023" {
   most_recent = true
   owners      = ["amazon"]
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["al2023-ami-*-x86_64"]
   }
 }
 
@@ -138,7 +138,7 @@ resource "aws_security_group" "main" {
 
 # EC2 instance: t3.small with 8GB EBS root volume
 resource "aws_instance" "main" {
-  ami                    = data.aws_ami.amazon_linux_2.id
+  ami                    = data.aws_ami.amazon_linux_2023.id
   instance_type          = "t3.small"
   subnet_id              = aws_subnet.main.id
   vpc_security_group_ids = [aws_security_group.main.id]
@@ -146,8 +146,8 @@ resource "aws_instance" "main" {
 
   user_data = <<-EOF
     #!/bin/bash
-    yum update -y
-    amazon-linux-extras install docker -y
+    dnf update -y
+    dnf install docker -y
     systemctl start docker
     systemctl enable docker
     usermod -aG docker ec2-user
@@ -155,7 +155,7 @@ resource "aws_instance" "main" {
   EOF
 
   root_block_device {
-    volume_size           = 8
+    volume_size           = 30
     volume_type           = "gp3"
     delete_on_termination = false
   }

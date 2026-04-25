@@ -44,7 +44,7 @@ resource "aws_lambda_function" "ec2_scheduler" {
 
   environment {
     variables = {
-      INSTANCE_ID = "i-0046b1c6b0e0d0ad0"
+      INSTANCE_ID = aws_instance.main.id
     }
   }
 
