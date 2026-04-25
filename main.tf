@@ -160,6 +160,10 @@ resource "aws_instance" "main" {
     delete_on_termination = false
   }
 
+  lifecycle {
+    ignore_changes = [ami]
+  }
+
   tags = {
     Name        = "main-ec2"
     Environment = var.environment
